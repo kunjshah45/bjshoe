@@ -1,5 +1,5 @@
-import { 
-  Room, Player, GameSettings, createShoe, shuffleShoe 
+import {
+  Room, Player, GameSettings, createShoe, shuffleShoe, moveToNextActiveTurn,
 } from '@blackjack/shared';
 
 const DEFAULT_SETTINGS: GameSettings = {
@@ -66,16 +66,43 @@ export function leaveRoom(roomCode: string, playerId: string): Room | null {
   if (!room) return null;
 
   room.players = room.players.filter(p => p.id !== playerId);
-  
+
+  // Clean up the active round so the game doesn't hang on the missing seat.
+  // Bets are forfeited (chips were already deducted on placeBet).
+  if (room.currentRound) {
+    const apIndex = room.currentRound.activePlayers.findIndex(ap => ap.playerId === playerId);
+    if (apIndex !== -1) {
+      if (room.status === 'betting') {
+        // Drop their seat entirely so allBetsPlaced isn't blocked by a $0 bet.
+        room.currentRound.activePlayers.splice(apIndex, 1);
+        if (room.currentRound.turnIndex > apIndex) {
+          room.currentRound.turnIndex -= 1;
+        }
+      } else {
+        // Mid-hand: forfeit their hands. Keeps activePlayers index stable for turn pointer.
+        const ap = room.currentRound.activePlayers[apIndex];
+        ap.hands.forEach(h => {
+          if (!h.isFinished) {
+            h.isFinished = true;
+            h.result = 'loss';
+          }
+        });
+        if (room.status === 'playing' && room.currentRound.turnIndex === apIndex) {
+          moveToNextActiveTurn(room);
+        }
+      }
+    }
+  }
+
   if (room.players.length === 0) {
     console.log(`[GameManager] Room ${roomCode} is empty, destroying.`);
     rooms.delete(roomCode);
     return null;
   }
 
-  // Assign new host if host left
   if (room.hostId === playerId) {
     room.hostId = room.players[0].id;
+    console.log(`[GameManager] Host left room ${roomCode}; new host: ${room.hostId}`);
   }
 
   return room;

@@ -11,49 +11,55 @@ export function ResultOverlay({ result, amount, onComplete }: ResultOverlayProps
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.3)).current;
   const slideAnim = useRef(new Animated.Value(-100)).current;
+  // Stable ref so the effect doesn't restart on every parent re-render
+  // (e.g. the 1Hz auto-deal countdown). Restarting truncated the visible time.
+  const onCompleteRef = useRef(onComplete);
+  onCompleteRef.current = onComplete;
 
   useEffect(() => {
-    if (result) {
-      Animated.sequence([
-        Animated.parallel([
-          Animated.timing(fadeAnim, {
-            toValue: 1,
-            duration: 300,
-            easing: Easing.out(Easing.ease),
-            useNativeDriver: true,
-          }),
-          Animated.spring(scaleAnim, {
-            toValue: 1,
-            useNativeDriver: true,
-            friction: 6,
-            tension: 100,
-          }),
-          Animated.spring(slideAnim, {
-            toValue: 0,
-            useNativeDriver: true,
-            friction: 6,
-            tension: 100,
-          }),
-        ]),
-        Animated.delay(1500),
-        Animated.parallel([
-          Animated.timing(fadeAnim, {
-            toValue: 0,
-            duration: 300,
-            easing: Easing.in(Easing.ease),
-            useNativeDriver: true,
-          }),
-          Animated.timing(scaleAnim, {
-            toValue: 0.5,
-            duration: 300,
-            useNativeDriver: true,
-          }),
-        ]),
-      ]).start(() => {
-        onComplete?.();
-      });
-    }
-  }, [result, fadeAnim, scaleAnim, slideAnim, onComplete]);
+    if (!result) return;
+    fadeAnim.setValue(0);
+    scaleAnim.setValue(0.3);
+    slideAnim.setValue(-100);
+    Animated.sequence([
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 300,
+          easing: Easing.out(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.spring(scaleAnim, {
+          toValue: 1,
+          useNativeDriver: true,
+          friction: 6,
+          tension: 100,
+        }),
+        Animated.spring(slideAnim, {
+          toValue: 0,
+          useNativeDriver: true,
+          friction: 6,
+          tension: 100,
+        }),
+      ]),
+      Animated.delay(3000),
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 400,
+          easing: Easing.in(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(scaleAnim, {
+          toValue: 0.5,
+          duration: 400,
+          useNativeDriver: true,
+        }),
+      ]),
+    ]).start(() => {
+      onCompleteRef.current?.();
+    });
+  }, [result, fadeAnim, scaleAnim, slideAnim]);
 
   if (!result) return null;
 

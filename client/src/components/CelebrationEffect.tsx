@@ -8,9 +8,9 @@ interface CelebrationEffectProps {
 }
 
 export function CelebrationEffect({ result }: CelebrationEffectProps) {
-  if (result === 'blackjack') return <ParticleBurst key="bj" variant="blackjack" />;
-  if (result === 'win') return <ParticleBurst key="win" variant="win" />;
-  if (result === 'loss') return <BustFlash key="loss" />;
+  if (result === 'blackjack') return <><Flash key="bj-flash" color="#10b981" /><ParticleBurst key="bj" variant="blackjack" /></>;
+  if (result === 'win') return <><Flash key="win-flash" color="#10b981" /><ParticleBurst key="win" variant="win" /></>;
+  if (result === 'loss') return <Flash key="loss" color="#ef4444" />;
   return null;
 }
 
@@ -156,39 +156,21 @@ function Particle({ startX, endX, delay, rotation, color, size, glyph }: Particl
 
 // ---------------------------------------------------------------------------
 
-function BustFlash() {
+function Flash({ color }: { color: string }) {
   const flashAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     Animated.sequence([
-      Animated.timing(flashAnim, {
-        toValue: 0.55,
-        duration: 120,
-        useNativeDriver: true,
-      }),
-      Animated.timing(flashAnim, {
-        toValue: 0,
-        duration: 250,
-        useNativeDriver: true,
-      }),
-      Animated.delay(80),
-      Animated.timing(flashAnim, {
-        toValue: 0.4,
-        duration: 100,
-        useNativeDriver: true,
-      }),
-      Animated.timing(flashAnim, {
-        toValue: 0,
-        duration: 350,
-        useNativeDriver: true,
-      }),
+      Animated.timing(flashAnim, { toValue: 0.75, duration: 180, useNativeDriver: true }),
+      Animated.delay(550),
+      Animated.timing(flashAnim, { toValue: 0, duration: 500, useNativeDriver: true }),
     ]).start();
   }, []);
 
   return (
     <Animated.View
       pointerEvents="none"
-      style={[styles.overlay, styles.bustFlash, { opacity: flashAnim }]}
+      style={[styles.overlay, { backgroundColor: color, opacity: flashAnim }]}
     />
   );
 }

@@ -22,12 +22,15 @@ export function CardView({
   const isInstant = animationSpeed === 'instant';
   const speedFactor = animationSpeed === 'fast' ? 0.5 : 1;
 
-  // Start at the final visible position; the deal animation rewinds and plays
-  // forward. If the animation never fires, the card is still visible in slot.
-  const translateXAnim = useRef(new Animated.Value(0)).current;
-  const translateYAnim = useRef(new Animated.Value(0)).current;
-  const scaleAnim = useRef(new Animated.Value(1)).current;
-  const rotateAnim = useRef(new Animated.Value(0)).current;
+  // For 'deal' we initialize at the off-screen rewind position so the very
+  // first paint is already pre-deal. Otherwise the card flashes in its final
+  // slot for one frame before useEffect rewinds it. 'sweep' starts in slot
+  // (it animates outward); 'none'/'flip' also start in slot.
+  const willDeal = animate === 'deal' && !isInstant;
+  const translateXAnim = useRef(new Animated.Value(willDeal ? 400 : 0)).current;
+  const translateYAnim = useRef(new Animated.Value(willDeal ? -150 : 0)).current;
+  const scaleAnim = useRef(new Animated.Value(willDeal ? 0.6 : 1)).current;
+  const rotateAnim = useRef(new Animated.Value(willDeal ? 1 : 0)).current;
   const flipScaleX = useRef(new Animated.Value(1)).current;
   const opacityAnim = useRef(new Animated.Value(1)).current;
 
