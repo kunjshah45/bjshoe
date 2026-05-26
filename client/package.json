@@ -6,7 +6,9 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "build:web": "expo export -p web",
+    "build:web:ghpages": "EXPO_BASE_URL=/blackjack expo export -p web && cp dist/index.html dist/404.html"
   },
   "dependencies": {
     "@blackjack/shared": "^1.0.0",

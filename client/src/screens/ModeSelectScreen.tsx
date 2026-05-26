@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-na
 import { useGameStore } from '../store/gameStore';
 import { useSoloStore } from '../store/soloStore';
 import { useSettingsStore } from '../store/settingsStore';
+import { FEATURES } from '../config';
 
 interface ModeSelectScreenProps {
   onHowToPlay: () => void;
@@ -34,11 +35,13 @@ export function ModeSelectScreen({ onHowToPlay }: ModeSelectScreenProps) {
           <Text style={styles.modeDescription}>Just you vs. the dealer. No server needed.</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={[styles.modeButton, styles.multiButton]} onPress={handleMulti}>
-          <Text style={styles.modeEmoji}>👥</Text>
-          <Text style={styles.modeTitle}>Play with Friends</Text>
-          <Text style={styles.modeDescription}>Join a room with up to 7 players.</Text>
-        </TouchableOpacity>
+        {FEATURES.multiplayer && (
+          <TouchableOpacity style={[styles.modeButton, styles.multiButton]} onPress={handleMulti}>
+            <Text style={styles.modeEmoji}>👥</Text>
+            <Text style={styles.modeTitle}>Play with Friends</Text>
+            <Text style={styles.modeDescription}>Join a room with up to 7 players.</Text>
+          </TouchableOpacity>
+        )}
 
         <TouchableOpacity style={[styles.modeButton, styles.helpButton]} onPress={onHowToPlay}>
           <Text style={styles.modeEmoji}>📖</Text>

@@ -384,7 +384,8 @@ function resolveRound(room: Room, dealerTotal: number) {
           hand.result = 'push';
           player.chips += hand.bet;
         } else {
-          player.chips += hand.bet + (hand.bet * 1.5);
+          // 3:2 floored — keeps chip totals integer (no $62.50 from a $25 BJ).
+          player.chips += hand.bet + Math.floor(hand.bet * 1.5);
         }
         continue;
       }

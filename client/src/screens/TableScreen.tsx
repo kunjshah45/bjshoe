@@ -288,8 +288,10 @@ export function TableScreen() {
     return cardIndex * (numActivePlayers + 1) + numActivePlayers;
   };
 
-  const showOutOfChipsModal = gameMode === 'solo' && playerChips === 0 && isBetting;
-  const showSpectatorOverlay = gameMode === 'multi' && playerChips === 0 && !spectatorDismissed;
+  // "Out of chips" really means "can't afford the minimum bet" — covers both
+  // dead-zero and fractional leftovers (e.g. $2.50 after a 3:2 BJ on a $5 bet).
+  const showOutOfChipsModal = gameMode === 'solo' && playerChips < MIN_BET && isBetting;
+  const showSpectatorOverlay = gameMode === 'multi' && playerChips < MIN_BET && !spectatorDismissed;
 
   return (
     <SafeAreaView style={styles.tableContainer}>
