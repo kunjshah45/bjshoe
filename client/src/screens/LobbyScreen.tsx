@@ -4,6 +4,7 @@ import { socket } from '../services/socket';
 import { useGameStore } from '../store/gameStore';
 import { useSettingsStore } from '../store/settingsStore';
 import { SettingsModal } from '../components/SettingsModal';
+import { playSfx } from '../services/audio';
 
 export function LobbyScreen() {
   const { isConnected, player, updatePlayer, room, setRoom, lastRoomCode, setLastRoomCode, setGameMode } = useGameStore();
@@ -70,7 +71,7 @@ export function LobbyScreen() {
       <View style={styles.content}>
         <View style={styles.headerRow}>
           <Text style={styles.title}>🃏 Blackjack</Text>
-          <TouchableOpacity style={styles.settingsButton} onPress={() => setSettingsVisible(true)}>
+          <TouchableOpacity style={styles.settingsButton} onPress={() => { playSfx('settings'); setSettingsVisible(true); }}>
             <Text style={styles.settingsButtonText}>⚙️</Text>
           </TouchableOpacity>
         </View>

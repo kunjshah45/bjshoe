@@ -7,6 +7,7 @@ import { useSoloStore } from '../store/soloStore';
 import { useSettingsStore } from '../store/settingsStore';
 import { useActiveRoom } from '../hooks/useActiveRoom';
 import { useGameActions } from '../hooks/useGameActions';
+import { playSfx } from '../services/audio';
 import { SettingsModal } from '../components/SettingsModal';
 import { OutOfChipsModal } from '../components/OutOfChipsModal';
 import { SpectatorOverlay } from '../components/SpectatorOverlay';
@@ -136,6 +137,9 @@ export function TableScreen() {
     resultShownForRoundRef.current = roundId;
     const timer = setTimeout(() => {
       setShowResult({ result: displayResult, amount: total });
+      if (displayResult === 'blackjack') playSfx('blackjack');
+      else if (displayResult === 'win') playSfx('win');
+      else if (displayResult === 'loss') playSfx('lose');
     }, overlayDelay);
     return () => clearTimeout(timer);
   }, [room?.status, room?.currentRound?.dealerCards.length, player.id, settings.animationSpeed]);
@@ -196,6 +200,7 @@ export function TableScreen() {
   const handleAddChip = (amount: number) => {
     const next = pendingBet + amount;
     if (next > playerChips) return;
+    playSfx('chipClick');
     setPendingBet(next);
   };
 
