@@ -303,7 +303,7 @@ export function TableScreen() {
       <SettingsModal
         visible={settingsVisible}
         onClose={() => setSettingsVisible(false)}
-        isHost={!!isHost && room.status === 'waiting'}
+        isHost={gameMode === 'solo' || (!!isHost && room.status === 'waiting')}
       />
       <OutOfChipsModal visible={showOutOfChipsModal} onClaim={handleClaimFreeChips} />
       {showSpectatorOverlay && (
@@ -314,9 +314,17 @@ export function TableScreen() {
       )}
       <DiscardPile count={discardCount} />
       <Shoe decks={room.settings.deckCount} />
-      <TouchableOpacity style={styles.modeBackButton} onPress={handleChangeMode}>
-        <Text style={styles.modeBackText}>← Change mode</Text>
-      </TouchableOpacity>
+      <View style={styles.topBar} pointerEvents="box-none">
+        <TouchableOpacity style={styles.modeBackButton} onPress={handleChangeMode}>
+          <Text style={styles.modeBackText}>← Change mode</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.settingsButton}
+          onPress={() => { playSfx('settings'); setSettingsVisible(true); }}
+        >
+          <Text style={styles.settingsButtonText}>⚙️</Text>
+        </TouchableOpacity>
+      </View>
       <ScrollView contentContainerStyle={styles.tableContent}>
         {/* Dealer Area */}
         <View style={styles.dealerArea}>
@@ -530,8 +538,11 @@ const styles = StyleSheet.create({
   tableContainer: { flex: 1, backgroundColor: '#064e3b' },
   tableContent: { flex: 1, padding: 20, paddingTop: 130, justifyContent: 'space-between' },
   loadingText: { color: '#94a3b8', textAlign: 'center', marginTop: 60, fontSize: 16 },
-  modeBackButton: { position: 'absolute', top: 40, alignSelf: 'center', zIndex: 30, backgroundColor: 'rgba(15,23,42,0.85)', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 8, borderWidth: 1, borderColor: '#334155' },
+  topBar: { position: 'absolute', top: 40, left: 0, right: 0, zIndex: 30, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 10 },
+  modeBackButton: { backgroundColor: 'rgba(15,23,42,0.85)', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 8, borderWidth: 1, borderColor: '#334155' },
   modeBackText: { color: '#f8fafc', fontSize: 13, fontWeight: '600' },
+  settingsButton: { backgroundColor: 'rgba(15,23,42,0.85)', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8, borderWidth: 1, borderColor: '#334155', justifyContent: 'center', alignItems: 'center' },
+  settingsButtonText: { fontSize: 18 },
   dealerArea: { alignItems: 'center', marginTop: 20 },
   playerArea: { alignItems: 'center', marginBottom: 20 },
   centerArea: { alignItems: 'center', justifyContent: 'center', flex: 1 },
