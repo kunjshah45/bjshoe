@@ -7,6 +7,7 @@ import { HowToPlayScreen } from './src/screens/HowToPlayScreen';
 import { LobbyScreen } from './src/screens/LobbyScreen';
 import { TableScreen } from './src/screens/TableScreen';
 import { useMultiSocket } from './src/hooks/useMultiSocket';
+import { useBgMusic } from './src/hooks/useBgMusic';
 import { FEATURES } from './src/config';
 
 function MultiRoot() {
@@ -20,6 +21,7 @@ export default function App() {
   const gameMode = useGameStore((s) => s.gameMode);
   const setGameMode = useGameStore((s) => s.setGameMode);
   const [showHowToPlay, setShowHowToPlay] = useState(false);
+  useBgMusic();
 
   // If a returning user has gameMode === 'multi' from localStorage but the
   // current build has multiplayer disabled, drop them back to mode select.

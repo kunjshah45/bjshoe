@@ -49,3 +49,39 @@ export function playSfx(id: SfxId, volume: number = 1.0): void {
   // gesture requirement, so subsequent plays succeed.
   void node.play().catch(() => {});
 }
+
+// ---------------- Background music ----------------
+
+const BG_MUSIC_PATH = '/audio/bg-music.mp3';
+let bgMusicEl: HTMLAudioElement | null = null;
+
+function getBgMusic(): HTMLAudioElement | null {
+  if (!isWeb()) return null;
+  if (!bgMusicEl) {
+    bgMusicEl = new Audio(BG_MUSIC_PATH);
+    bgMusicEl.loop = true;
+    bgMusicEl.preload = 'auto';
+  }
+  return bgMusicEl;
+}
+
+export function startBgMusic(): void {
+  const el = getBgMusic();
+  if (!el) return;
+  const settings = useSettingsStore.getState();
+  if (!settings.backgroundMusic) return;
+  el.volume = Math.max(0, Math.min(1, settings.musicVolume / 100));
+  void el.play().catch(() => {});
+}
+
+export function stopBgMusic(): void {
+  const el = getBgMusic();
+  if (!el) return;
+  el.pause();
+}
+
+export function setBgMusicVolume(vol0to1: number): void {
+  const el = getBgMusic();
+  if (!el) return;
+  el.volume = Math.max(0, Math.min(1, vol0to1));
+}
