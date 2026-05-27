@@ -8,7 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "build:web": "expo export -p web",
-    "build:web:ghpages": "EXPO_BASE_URL=/bjshoe expo export -p web && cp dist/index.html dist/404.html"
+    "build:web:ghpages": "expo export -p web && cp dist/index.html dist/404.html && echo bjshoe.app > dist/CNAME"
   },
   "dependencies": {
     "@blackjack/shared": "^1.0.0",
