@@ -117,6 +117,11 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>${SITE_URL}/card-counting/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>${SITE_URL}/privacy/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>

@@ -147,7 +147,9 @@ export function HowToPlayScreen({ onBack }: HowToPlayScreenProps) {
             <Text style={styles.bold}>Is the shuffle fair?{'\n'}</Text>
             The shoe is shuffled with a standard Fisher-Yates algorithm using the browser's cryptographic random source. In solo mode the shoe lives in your own browser; in multiplayer it lives on the server.{'\n\n'}
             <Text style={styles.bold}>Can I count cards?{'\n'}</Text>
-            The shoe reshuffles every round in solo mode (deck penetration is high), so counting won't give you a meaningful edge here. Real-money casinos take card counting much more seriously.
+            The shoe reshuffles every round in solo mode (deck penetration is high), so counting won't give you a meaningful edge here. If you want to learn the Hi-Lo system properly, we wrote a full guide at{' '}
+            {/* @ts-ignore — href is supported by react-native-web on Text */}
+            <Text accessibilityRole="link" href="/card-counting/" style={styles.link}>/card-counting/</Text>.
           </Text>
         </View>
 
@@ -229,6 +231,10 @@ const styles = StyleSheet.create({
   bold: {
     fontWeight: 'bold',
     color: '#f8fafc',
+  },
+  link: {
+    color: '#60a5fa',
+    textDecorationLine: 'underline',
   },
   actionItem: {
     flexDirection: 'row',

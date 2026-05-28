@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to Count Cards in Blackjack — Hi-Lo System Guide | bjshoe</title>
+  <meta name="description" content="Learn to count cards in blackjack with the Hi-Lo system. Step-by-step guide to running count, true count, bet spreading, legality, history, and basic strategy deviations.">
+  <meta name="keywords" content="how to count cards in blackjack, hi-lo card counting, blackjack counting, true count, running count, blackjack strategy, beat the dealer, ken uston, edward thorp, mit blackjack team">
+  <link rel="canonical" href="https://bjshoe.app/card-counting/">
+  <meta name="theme-color" content="#0f172a">
+  <meta property="og:title" content="How to Count Cards in Blackjack — Hi-Lo System Guide">
+  <meta property="og:description" content="A practical step-by-step guide to the Hi-Lo card counting system, true count conversion, bet spreading, and the legal landscape.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://bjshoe.app/card-counting/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "How to Count Cards in Blackjack — Hi-Lo System Guide",
+    "description": "A practical step-by-step guide to the Hi-Lo card counting system used to beat blackjack: running count, true count, bet spreading, strategy deviations, legality, and history.",
+    "author": { "@type": "Organization", "name": "bjshoe" },
+    "publisher": { "@type": "Organization", "name": "bjshoe" },
+    "datePublished": "2026-05-27",
+    "mainEntityOfPage": "https://bjshoe.app/card-counting/"
+  }
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1675923800122600" crossorigin="anonymous"></script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; background: #0f172a; color: #cbd5e1; margin: 0; padding: 40px 20px; line-height: 1.6; }
+    .container { max-width: 760px; margin: 0 auto; }
+    h1 { color: #f8fafc; font-size: 32px; margin-bottom: 8px; line-height: 1.2; }
+    h2 { color: #fcd34d; font-size: 22px; margin-top: 36px; margin-bottom: 12px; }
+    h3 { color: #f8fafc; font-size: 18px; margin-top: 24px; margin-bottom: 8px; }
+    p, li { font-size: 16px; }
+    a { color: #60a5fa; }
+    .updated { color: #94a3b8; font-size: 14px; margin-bottom: 24px; }
+    .back { display: inline-block; margin-bottom: 24px; color: #94a3b8; text-decoration: none; }
+    .back:hover { color: #f8fafc; }
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 15px; }
+    th, td { border: 1px solid #334155; padding: 8px 12px; text-align: left; }
+    th { background: #1e293b; color: #f8fafc; }
+    code { background: #1e293b; color: #fcd34d; padding: 2px 6px; border-radius: 4px; font-size: 14px; }
+    .callout { background: #1e293b; border-left: 4px solid #fcd34d; padding: 16px 20px; border-radius: 6px; margin: 20px 0; }
+    .tldr { background: #1e293b; border-left: 4px solid #10b981; padding: 16px 20px; border-radius: 6px; margin: 20px 0; }
+    .play-cta { display: inline-block; background: #10b981; color: #f8fafc; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 24px; }
+    .sources { background: #1e293b; padding: 16px 20px; border-radius: 6px; margin-top: 32px; font-size: 14px; }
+    .sources ul { padding-left: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/" class="back">← Back to game</a>
+    <h1>How to Count Cards in Blackjack</h1>
+    <p class="updated">A practical guide to the Hi-Lo system · Updated May 2026</p>
+
+    <div class="tldr">
+      <strong>TL;DR:</strong> Card counting works because the player gets an edge when the remaining shoe is rich in tens and aces. The Hi-Lo system assigns +1, 0, or −1 to every card you see, divides by decks remaining to get a "true count", and tells you to bet bigger when the true count is high. It takes around 10 hours of practice to do reliably at casino speed. It's legal everywhere — but most casinos can still throw you out for doing it.
+    </div>
+
+    <h2>Why card counting works</h2>
+    <p>Blackjack is one of the only widely-offered casino games where the deck composition changes meaningfully as cards are played. After a Jack and a Queen come out, the shoe has fewer ten-value cards left — your odds of being dealt a natural blackjack on the next round go down. After three 2s and a 5 come out, the opposite happens: the shoe is now slightly richer in high cards, and the player gains a small edge.</p>
+    <p>That edge is real but small. With perfect basic strategy alone, the house edge in a typical six-deck game is around 0.5%. A skilled card counter using the Hi-Lo system can flip that edge to roughly 0.5–1.5% in the player's favor, depending on rules, deck penetration, and bet spread.</p>
+
+    <div class="callout">
+      <strong>Counterintuitive but important:</strong> Even at a high true count, your probability of winning any single hand is still <em>slightly below 50%</em>. The counter's edge does not come from winning more hands — it comes from being paid more on the ones you do win, via natural blackjacks (3:2), profitable doubles, splits, and insurance. Bet sizing is the lever, not the win rate. <em>(Stanford CS visualization, Wikipedia.)</em>
+    </div>
+
+    <h2>The Hi-Lo card values</h2>
+    <p>Hi-Lo is the simplest accurate system and the one almost every professional learns first. Every card you see gets assigned one of three values:</p>
+    <table>
+      <thead>
+        <tr><th>Cards</th><th>Hi-Lo value</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>2, 3, 4, 5, 6</td><td><code>+1</code></td></tr>
+        <tr><td>7, 8, 9</td><td><code>0</code> (neutral)</td></tr>
+        <tr><td>10, J, Q, K, A</td><td><code>−1</code></td></tr>
+      </tbody>
+    </table>
+    <p>The system is balanced: every full deck of 52 cards sums to zero. If you count every card in a single deck without error, you'll end at exactly 0.</p>
+
+    <h2>Step 1: The running count</h2>
+    <p>From the moment the shoe is shuffled, add and subtract as each card is dealt. You count <em>every</em> card you see — yours, the dealer's, every other player's. The total at any moment is your <strong>running count</strong>.</p>
+    <p>Example. Dealer turns up 6 (+1), 10 (−1), 5 (+1), King (−1), 4 (+1), 7 (0), 2 (+1). Running count = +2. The remaining shoe is slightly richer in tens and aces than a fresh shoe would be.</p>
+
+    <h3>Practice drill</h3>
+    <p>Start with a single deck. Flip cards one at a time and call out the running count. When you finish the deck, the count must equal zero. If it doesn't, you missed a card. Time yourself.</p>
+    <p>Jim Makos recommends counting a full deck in <strong>under 20 seconds with zero errors</strong> before you ever sit at a real table. His personal account is also a warning worth taking seriously: laboratory speed doesn't translate to casino speed — the sensory overload of a real pit (noise, lights, rapid dealing, social pressure) derails counters who only practiced quietly at home. Watch from behind players for several sessions before risking money.</p>
+
+    <h2>Step 2: Convert to the true count</h2>
+    <p>The running count alone isn't enough — a +6 with one deck left is far more powerful than a +6 with six decks left, because the high cards are concentrated. The fix is the <strong>true count</strong>:</p>
+    <div class="callout">
+      <strong>True count = Running count ÷ Decks remaining</strong>
+    </div>
+    <p>You estimate decks remaining by looking at the discard tray (or the shoe itself). Round to the nearest half-deck.</p>
+    <p>Example. Running count is +9, and you see about three decks left in the shoe. True count = 9 ÷ 3 = +3. <em>That's</em> when you bet bigger.</p>
+
+    <h3>True count vs. player advantage (Stanford simulation)</h3>
+    <p>A Stanford CS visualization of Hi-Lo simulations found a near-linear relationship between true count and player edge:</p>
+    <table>
+      <thead><tr><th>True count</th><th>Approx. player advantage</th></tr></thead>
+      <tbody>
+        <tr><td>0 (basic strategy only)</td><td>−0.35%</td></tr>
+        <tr><td>+3</td><td>~+2%</td></tr>
+        <tr><td>+6</td><td>~+5%</td></tr>
+        <tr><td>+9</td><td>~+8.25%</td></tr>
+      </tbody>
+    </table>
+    <p>The same analysis showed lower counts occur much more frequently than high ones — most of the time you'll be sitting at neutral or slightly negative counts, betting the minimum. That's why bet spread is so important: the rare high-count rounds are where almost all the profit lives.</p>
+
+    <h2>Step 3: Bet spreading</h2>
+    <p>The whole point of counting is to bet more money when the odds favor you and less when they don't. Two common ladders:</p>
+    <table>
+      <thead><tr><th>True count</th><th>Aggressive (1–12 spread)</th><th>Conservative (Makos)</th></tr></thead>
+      <tbody>
+        <tr><td>≤ +1</td><td>1 unit</td><td>1 unit</td></tr>
+        <tr><td>+2</td><td>2 units</td><td>2 units</td></tr>
+        <tr><td>+3</td><td>4 units</td><td>3 units</td></tr>
+        <tr><td>+4</td><td>8 units</td><td>—</td></tr>
+        <tr><td>+5 or more</td><td>12 units</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <p>The "unit" is your minimum bet. Aggressive spreads (1–12 or 1–15) draw casino attention quickly. Wikipedia notes that with a 1–15 spread you can expect roughly +1.2% advantage with a standard deviation of about 3.5 — meaningful variance, even when you're playing perfectly.</p>
+
+    <h2>Bankroll requirements</h2>
+    <p>Card counting has a small edge with very high variance. Wikipedia summarizes the standard guidance: <strong>around 100× your maximum bet</strong> as a bankroll. So if you're spreading 1–12 units and your max bet is $300, you want about $30,000 set aside for the long haul. Otherwise you'll go bust during a normal losing streak even with perfect play.</p>
+    <p>Realistic earnings expectations from Wikipedia: a counter spreading appropriately at a six-deck game with about a 1% edge, averaging $100 per hand at 50 hands per hour, can expect roughly <strong>$50/hour</strong> — long-term, smoothed over hundreds of hours.</p>
+
+    <h2>Step 4: Strategy deviations (Illustrious 18)</h2>
+    <p>At high true counts, a handful of basic-strategy plays become wrong. The most valuable deviations are known as the <strong>Illustrious 18</strong>. The top two account for a large share of the gain:</p>
+    <ul>
+      <li><strong>Insurance at true count ≥ +3.</strong> Insurance is normally a bad bet, but when the shoe is heavily ten-rich, dealer blackjacks become likely enough that insurance pays off.</li>
+      <li><strong>Stand on 16 vs dealer 10 at true count ≥ 0.</strong> Basic strategy says hit; if the count is neutral or positive, stand instead.</li>
+    </ul>
+    <p>You don't need all 18 deviations to capture most of the edge — the top 4 or 5 do the heavy lifting.</p>
+
+    <h2>Other counting systems</h2>
+    <p>Hi-Lo is the most common, but it's not the only one. There's a real tradeoff between accuracy and how fast you can keep up:</p>
+    <table>
+      <thead><tr><th>System</th><th>Level</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Hi-Lo</td><td>1</td><td>The standard — simple, accurate enough for almost everyone.</td></tr>
+        <tr><td>KO (Knock-Out)</td><td>1</td><td>Unbalanced — skips the true-count division entirely. Easier mentally.</td></tr>
+        <tr><td>Hi-Opt I</td><td>1</td><td>Aces neutral; aces tracked as a separate side count.</td></tr>
+        <tr><td>Hi-Opt II</td><td>2</td><td>Uses ±2 values for finer accuracy. Harder to do at speed.</td></tr>
+        <tr><td>Omega II</td><td>2</td><td>+2 for 4/5/6, −1 for 9. More precise but slower.</td></tr>
+        <tr><td>Zen Count</td><td>2</td><td>Comprehensive level-2 system.</td></tr>
+        <tr><td>Wong Halves</td><td>3</td><td>Uses ±0.5 fractional values. Maximum precision, maximum effort.</td></tr>
+      </tbody>
+    </table>
+    <p>Wikipedia summarizes the tradeoff bluntly: "Some counters earn more money playing a simple count quickly than by playing a complex count slowly." Master Hi-Lo first.</p>
+
+    <h2>A brief history</h2>
+    <p>Card counting wasn't invented by one person, but it has a clear timeline of milestones:</p>
+    <ul>
+      <li><strong>1957</strong> — "The Four Horsemen" (Baldwin, Cantey, Maisel, McDermott) publish the first mathematically correct basic strategy, computed by hand on mechanical calculators.</li>
+      <li><strong>1962</strong> — <strong>Edward O. Thorp</strong>, an MIT mathematician, publishes <em>Beat the Dealer</em>. Thorp is widely credited as the father of card counting; the book proves the game is beatable and triggers an industry-wide response (rule changes, more decks, eventually CSMs).</li>
+      <li><strong>1970s</strong> — <strong>Ken Uston</strong> pioneers the "Big Player" team concept, where spotters quietly count at low bets and signal a high-roller to come over and play big once the count is favorable.</li>
+      <li><strong>1979</strong> — Uston sues an Atlantic City casino after being banned. The New Jersey Supreme Court rules that only the Casino Control Commission may exclude skillful players — which it has never done. <strong>Atlantic City casinos cannot ban counters to this day.</strong></li>
+      <li><strong>1980s–2000s</strong> — Al Francesco's, Tommy Hyland's, and the MIT Blackjack Team take team play to industrial scale, earning millions. The MIT story later inspired the 2008 film <em>21</em>.</li>
+    </ul>
+
+    <h2>Legal status</h2>
+    <p>Wikipedia is unambiguous: <em>"Card counting is not illegal under British law, nor is it under federal, state, or local laws in the United States provided that no external card counting device or person assists the player."</em></p>
+    <p>That said, most casinos are private property and can refuse service to anyone. In practice:</p>
+    <ul>
+      <li><strong>Nevada</strong> — casinos can ban suspected counters, change rules mid-shoe, or back you off the table. They do this often.</li>
+      <li><strong>Atlantic City, NJ</strong> — by court precedent (the Uston case), casinos cannot legally ban counters. They use other countermeasures instead — preferential shuffling, lower table limits, no mid-shoe entry.</li>
+      <li><strong>Macau</strong> — counting is technically legal but expulsion is at casino discretion. Using any electronic assistance is prosecutable.</li>
+      <li><strong>UK</strong> — counting is legal. Casinos can still bar you.</li>
+    </ul>
+    <p>Using a device (phone, hidden computer, earpiece signal) crosses into <em>cheating</em> in most jurisdictions and can be charged criminally.</p>
+
+    <h2>Casino countermeasures</h2>
+    <p>Modern pits are well-equipped to spot and stop counters. The full toolbox:</p>
+    <ul>
+      <li><strong>Continuous Shuffle Machines (CSMs)</strong> — reshuffle every round, making counting mathematically impossible. If you see one, walk away from that table.</li>
+      <li><strong>Decreased penetration</strong> — shuffling earlier in the shoe, before the count has time to swing positive.</li>
+      <li><strong>Preferential shuffling</strong> — pit boss orders a shuffle exactly when the count goes high. Subtle and devastating to a counter's edge.</li>
+      <li><strong>No mid-shoe entry</strong> — you can only sit down right after a shuffle, eliminating "Wonging" (joining only when the count is good).</li>
+      <li><strong>Flat-betting requirements</strong> — once flagged, you're told you can only bet the same amount each hand.</li>
+      <li><strong>Surveillance and databases</strong> — Griffin Investigations, Biometrica, OSN, and other private intelligence firms keep faces and bet patterns on file across casinos.</li>
+      <li><strong>Tracking technology</strong> — RFID chips, Shuffle Master's intelligent shoes, and surveillance software (Bloodhound, Protec 21) correlate bet variation with theoretical edge in real time.</li>
+      <li><strong>Backing off</strong> — politely (or not) being told you can play any other game in the house, but not blackjack.</li>
+    </ul>
+
+    <h2>Common mistakes</h2>
+    <ul>
+      <li><strong>Forgetting to convert to true count.</strong> Betting based on the running count is the #1 beginner error and gives away most of your edge.</li>
+      <li><strong>Counting too slowly.</strong> If you can't keep up with a dealer at full speed, you'll either lose your count or look obviously focused — both bad.</li>
+      <li><strong>Betting too aggressively.</strong> A 1–20 spread is profitable in theory but gets you backed off in practice.</li>
+      <li><strong>Playing under-bankrolled.</strong> Skipping the 100× max-bet bankroll rule is how skilled counters still go broke.</li>
+      <li><strong>Counting at a CSM table.</strong> CSMs reshuffle every round. Walk away.</li>
+      <li><strong>Counting online.</strong> As Jim Makos puts it: <em>"there's nothing to count"</em> — every online and live-online game reshuffles after every hand.</li>
+    </ul>
+
+    <h2>Reality check on bjshoe</h2>
+    <p>In bjshoe's solo mode the shoe is reshuffled at the start of each round, so deck penetration is effectively zero — counting can't help you here, by design. The game is meant to feel like a casino table for fun, not be a card-counting trainer. If you want to practice counting drills, use a physical deck and a timer.</p>
+
+    <p><a href="/" class="play-cta">▶ Play bjshoe — free blackjack, no signup</a></p>
+
+    <div class="sources">
+      <strong>Sources and further reading:</strong>
+      <ul>
+        <li><a href="https://en.wikipedia.org/wiki/Card_counting" target="_blank" rel="noopener">Wikipedia — Card counting</a> (legal status, systems, countermeasures, edge figures)</li>
+        <li><a href="https://graphics.stanford.edu/~billyc/class/vis_win0304/as2/" target="_blank" rel="noopener">Stanford CS — Visualizing Hi-Low</a> (true count → advantage simulation)</li>
+        <li><a href="https://jimmakos.com/how-to-count-cards-in-blackjack/" target="_blank" rel="noopener">Jim Makos — How to count cards in blackjack</a> (drills, conservative bet spread, casino practice)</li>
+        <li><a href="https://medium.com/@JakeCooper/basic-blackjack-counting-in-5-minutes-c82507819a5a" target="_blank" rel="noopener">Jake Cooper (Medium) — Basic blackjack counting in 5 minutes</a> (beginner framing)</li>
+        <li><a href="https://www.blackjackapprenticeship.com/how-to-count-cards/" target="_blank" rel="noopener">Blackjack Apprenticeship — How to count cards</a> (industry-standard tutorial)</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

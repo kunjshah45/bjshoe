@@ -51,6 +51,9 @@ export function ModeSelectScreen({ onHowToPlay }: ModeSelectScreenProps) {
 
         <View style={styles.footer}>
           {/* @ts-ignore — href is supported by react-native-web on Text */}
+          <Text accessibilityRole="link" href="/card-counting/" style={styles.footerLink}>Card Counting</Text>
+          <Text style={styles.footerSep}>·</Text>
+          {/* @ts-ignore */}
           <Text accessibilityRole="link" href="/privacy/" style={styles.footerLink}>Privacy</Text>
           <Text style={styles.footerSep}>·</Text>
           {/* @ts-ignore */}
