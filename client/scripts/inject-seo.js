@@ -6,6 +6,9 @@ const fs = require('fs');
 const path = require('path');
 
 const SITE_URL = 'https://bjshoe.app';
+const GA_ID = 'G-K5ZBX1MDTT';
+const GA_TAG = `<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_ID}');</script>`;
 const TITLE = 'Blackjack — Play Free Online Blackjack | bjshoe';
 const DESCRIPTION = 'Play free online blackjack against the dealer. No signup, no download, classic Vegas rules — splits, doubles, late surrender, insurance, and 3:2 blackjack payouts. Free chips, instant play.';
 const KEYWORDS = 'blackjack, free blackjack, online blackjack, blackjack online, blackjack free, play blackjack, blackjack game, vegas blackjack, 21, blackjack rules, blackjack strategy, free blackjack no download';
@@ -221,6 +224,30 @@ for (const file of ['index.html', '404.html']) {
   } else {
     console.log(`${file} already has SEO content`);
   }
+}
+
+// Inject the GA4 tag into every static HTML in dist (the content pages each
+// have their own index.html and need the tag separately from the React app).
+function walkHtmlFiles(dir) {
+  const out = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      out.push(...walkHtmlFiles(full));
+    } else if (entry.isFile() && entry.name.endsWith('.html')) {
+      out.push(full);
+    }
+  }
+  return out;
+}
+
+for (const filePath of walkHtmlFiles(distDir)) {
+  let html = fs.readFileSync(filePath, 'utf8');
+  if (html.includes(GA_ID)) continue; // idempotent
+  if (!html.includes('</head>')) continue; // GSC verification file etc. has no head
+  html = html.replace('</head>', `${GA_TAG}</head>`);
+  fs.writeFileSync(filePath, html);
+  console.log(`Injected GA4 into ${path.relative(distDir, filePath)}`);
 }
 
 // robots.txt — allow all crawlers, point to sitemap
