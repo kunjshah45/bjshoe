@@ -48,6 +48,16 @@ export function ModeSelectScreen({ onHowToPlay }: ModeSelectScreenProps) {
           <Text style={styles.modeTitle}>How to Play</Text>
           <Text style={styles.modeDescription}>Learn the rules, actions, and tips.</Text>
         </TouchableOpacity>
+
+        <View style={styles.footer}>
+          {/* @ts-ignore — href is supported by react-native-web on Text */}
+          <Text accessibilityRole="link" href="/privacy/" style={styles.footerLink}>Privacy</Text>
+          <Text style={styles.footerSep}>·</Text>
+          {/* @ts-ignore */}
+          <Text accessibilityRole="link" href="/terms/" style={styles.footerLink}>Terms</Text>
+          <Text style={styles.footerSep}>·</Text>
+          <Text style={styles.footerText}>© bjshoe</Text>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -72,4 +82,8 @@ const styles = StyleSheet.create({
   modeEmoji: { fontSize: 40, marginBottom: 8 },
   modeTitle: { fontSize: 22, fontWeight: 'bold', color: '#f8fafc', marginBottom: 6 },
   modeDescription: { fontSize: 14, color: '#94a3b8', textAlign: 'center' },
+  footer: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 24 },
+  footerLink: { color: '#94a3b8', fontSize: 13, textDecorationLine: 'underline' },
+  footerSep: { color: '#475569', fontSize: 13 },
+  footerText: { color: '#64748b', fontSize: 13 },
 });

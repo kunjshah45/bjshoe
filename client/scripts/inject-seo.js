@@ -108,13 +108,23 @@ Sitemap: ${SITE_URL}/sitemap.xml
 fs.writeFileSync(path.join(distDir, 'robots.txt'), robots);
 console.log('Wrote dist/robots.txt');
 
-// sitemap.xml — single-page site for now
+// sitemap.xml — root + legal pages
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>${SITE_URL}/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>${SITE_URL}/privacy/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>${SITE_URL}/terms/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
 </urlset>
 `;
