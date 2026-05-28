@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blackjack Basic Strategy Chart — Hit, Stand, Double, Split | bjshoe</title>
+  <meta name="description" content="Complete blackjack basic strategy chart for hard totals, soft totals, and pairs. Mathematically optimal play for every hand vs every dealer up-card. 6-deck S17 / H17.">
+  <meta name="keywords" content="blackjack strategy, blackjack basic strategy, blackjack chart, basic strategy chart, blackjack strategy chart, when to hit, when to stand, when to double, when to split">
+  <link rel="canonical" href="https://bjshoe.app/blackjack-strategy/">
+  <meta name="theme-color" content="#0f172a">
+  <meta property="og:title" content="Blackjack Basic Strategy Chart">
+  <meta property="og:description" content="The complete mathematically optimal blackjack strategy chart — hard totals, soft totals, pairs.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://bjshoe.app/blackjack-strategy/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Blackjack Basic Strategy Chart",
+    "description": "The complete mathematically optimal play for every blackjack hand: hard totals, soft totals, and pairs vs every dealer up-card.",
+    "author": { "@type": "Organization", "name": "bjshoe" },
+    "publisher": { "@type": "Organization", "name": "bjshoe" },
+    "datePublished": "2026-05-27",
+    "mainEntityOfPage": "https://bjshoe.app/blackjack-strategy/"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "bjshoe", "item": "https://bjshoe.app/" },
+      { "@type": "ListItem", "position": 2, "name": "Blackjack Strategy", "item": "https://bjshoe.app/blackjack-strategy/" }
+    ]
+  }
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1675923800122600" crossorigin="anonymous"></script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; background: #0f172a; color: #cbd5e1; margin: 0; padding: 40px 20px; line-height: 1.6; }
+    .container { max-width: 760px; margin: 0 auto; }
+    h1 { color: #f8fafc; font-size: 32px; margin-bottom: 8px; line-height: 1.2; }
+    h2 { color: #fcd34d; font-size: 22px; margin-top: 36px; margin-bottom: 12px; }
+    h3 { color: #f8fafc; font-size: 18px; margin-top: 24px; margin-bottom: 8px; }
+    p, li { font-size: 16px; }
+    a { color: #60a5fa; }
+    .updated { color: #94a3b8; font-size: 14px; margin-bottom: 24px; }
+    .back { display: inline-block; margin-bottom: 24px; color: #94a3b8; text-decoration: none; }
+    .back:hover { color: #f8fafc; }
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+    th, td { border: 1px solid #334155; padding: 6px 8px; text-align: center; }
+    th { background: #1e293b; color: #f8fafc; }
+    td.player { background: #1e293b; color: #f8fafc; font-weight: bold; }
+    td.H { background: #ef4444; color: #fff; }
+    td.S { background: #10b981; color: #fff; }
+    td.D { background: #f59e0b; color: #fff; }
+    td.P { background: #8b5cf6; color: #fff; }
+    td.Rh { background: #dc2626; color: #fff; }
+    .legend { background: #1e293b; padding: 14px 18px; border-radius: 6px; font-size: 14px; margin: 16px 0; }
+    .callout { background: #1e293b; border-left: 4px solid #fcd34d; padding: 16px 20px; border-radius: 6px; margin: 20px 0; }
+    .play-cta { display: inline-block; background: #10b981; color: #f8fafc; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/" class="back">← Back to game</a>
+    <h1>Blackjack Basic Strategy Chart</h1>
+    <p class="updated">Mathematically optimal play for every hand · 6-deck game · Updated May 2026</p>
+
+    <p>Blackjack basic strategy is the set of plays that, on average, lose the least money against the dealer over the long run. It was first worked out in 1957 by Baldwin, Cantey, Maisel, and McDermott using mechanical calculators, and has been refined by computer simulation ever since. Using basic strategy cuts the house edge from ~2% (untrained play) down to <strong>about 0.5%</strong> in a typical 6-deck game — better than nearly any other casino game.</p>
+
+    <div class="callout">
+      <strong>How to read the charts:</strong> Find your hand on the left, the dealer's up-card across the top, and the cell tells you the optimal action. Charts below are for a standard 6-deck game with the dealer hitting soft 17 (H17), double after split allowed, and late surrender available.
+    </div>
+
+    <div class="legend">
+      <strong>Legend:</strong>
+      <span style="background:#10b981;color:#fff;padding:2px 8px;border-radius:3px;margin:0 4px;">S</span> Stand
+      <span style="background:#ef4444;color:#fff;padding:2px 8px;border-radius:3px;margin:0 4px;">H</span> Hit
+      <span style="background:#f59e0b;color:#fff;padding:2px 8px;border-radius:3px;margin:0 4px;">D</span> Double if allowed, else Hit
+      <span style="background:#8b5cf6;color:#fff;padding:2px 8px;border-radius:3px;margin:0 4px;">P</span> Split
+      <span style="background:#dc2626;color:#fff;padding:2px 8px;border-radius:3px;margin:0 4px;">Rh</span> Surrender if allowed, else Hit
+    </div>
+
+    <h2>Hard totals (no Ace, or Ace counted as 1)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Your hand</th>
+          <th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="player">5–8</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+        <tr><td class="player">9</td><td class="H">H</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+        <tr><td class="player">10</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="H">H</td><td class="H">H</td></tr>
+        <tr><td class="player">11</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="H">H</td></tr>
+        <tr><td class="player">12</td><td class="H">H</td><td class="H">H</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+        <tr><td class="player">13</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+        <tr><td class="player">14</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+        <tr><td class="player">15</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="Rh">Rh</td><td class="Rh">Rh</td></tr>
+        <tr><td class="player">16</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="H">H</td><td class="H">H</td><td class="Rh">Rh</td><td class="Rh">Rh</td><td class="Rh">Rh</td></tr>
+        <tr><td class="player">17+</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Soft totals (Ace counted as 11)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Your hand</th>
+          <th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="player">A,2 (13)</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="D">D</td><td class="D">D</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+        <tr><td class="player">A,3 (14)</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="D">D</td><td class="D">D</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+        <tr><td class="player">A,4 (15)</td><td class="H">H</td><td class="H">H</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+        <tr><td class="player">A,5 (16)</td><td class="H">H</td><td class="H">H</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+        <tr><td class="player">A,6 (17)</td><td class="H">H</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+        <tr><td class="player">A,7 (18)</td><td class="S">S</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="S">S</td><td class="S">S</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+        <tr><td class="player">A,8 (19)</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td></tr>
+        <tr><td class="player">A,9 (20)</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Pairs (when to split)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Your pair</th>
+          <th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>A</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="player">A,A</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td></tr>
+        <tr><td class="player">2,2</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+        <tr><td class="player">3,3</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+        <tr><td class="player">4,4</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="P">P</td><td class="P">P</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+        <tr><td class="player">5,5</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="D">D</td><td class="H">H</td><td class="H">H</td></tr>
+        <tr><td class="player">6,6</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+        <tr><td class="player">7,7</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="H">H</td><td class="H">H</td><td class="H">H</td><td class="H">H</td></tr>
+        <tr><td class="player">8,8</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td></tr>
+        <tr><td class="player">9,9</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="P">P</td><td class="S">S</td><td class="P">P</td><td class="P">P</td><td class="S">S</td><td class="S">S</td></tr>
+        <tr><td class="player">10,10</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td><td class="S">S</td></tr>
+      </tbody>
+    </table>
+
+    <h2>The non-negotiable rules</h2>
+    <p>If you can't memorize the entire chart, internalize these absolute rules — they alone capture most of the basic-strategy edge:</p>
+    <ul>
+      <li><strong>Always split Aces and 8s.</strong></li>
+      <li><strong>Never split 10s.</strong> (20 is a great hand — don't break it up.)</li>
+      <li><strong>Never split 5s.</strong> (Doubling on a hard 10 is much better.)</li>
+      <li><strong>Always stand on hard 17 or higher.</strong></li>
+      <li><strong>Always hit hard 11 or lower.</strong> (Can't bust.)</li>
+      <li><strong>Always double on 11 vs anything except A.</strong></li>
+      <li><strong>Never take insurance</strong> (it's a side bet with negative expectation unless you're card counting).</li>
+    </ul>
+
+    <h2>The logic behind it</h2>
+    <p>Two factors drive every optimal play: (1) what hand totals the dealer can finish with, given each up-card; (2) how often you'll bust if you hit. The dealer's worst up-cards are <strong>4, 5, and 6</strong> (high bust rate ~40%), so you stand more and double more aggressively when they show these. Their best up-cards are <strong>9, 10, and Ace</strong> (low bust rate ~22-25%), so you hit until you reach 17+.</p>
+
+    <h2>What basic strategy doesn't do</h2>
+    <p>Basic strategy assumes a freshly shuffled shoe — it doesn't account for the cards that have already been played. To beat the house outright (instead of just minimizing losses), you need <strong>card counting</strong>, which tracks shoe composition and shifts both your bets and your play. See our <a href="/card-counting/">card counting guide</a>.</p>
+
+    <h2>Putting it into practice</h2>
+    <p>The fastest way to memorize basic strategy is to use it. On bjshoe you can play unlimited hands for free, with no signup, and the rules are configurable to match the chart above (6 decks, dealer rules of your choice, surrender available).</p>
+
+    <p><a href="/" class="play-cta">▶ Practice on bjshoe — free, no signup</a></p>
+
+    <h2>See also</h2>
+    <ul>
+      <li><a href="/blackjack-rules/">Blackjack Rules</a> — comprehensive reference</li>
+      <li><a href="/blackjack-odds/">Blackjack Odds &amp; House Edge</a> — the math</li>
+      <li><a href="/card-counting/">Card Counting Guide</a> — beyond basic strategy</li>
+      <li><a href="/blackjack-glossary/">Blackjack Glossary</a> — A–Z of terms</li>
+    </ul>
+  </div>
+</body>
+</html>

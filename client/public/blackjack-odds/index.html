@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blackjack Odds &amp; House Edge — The Math Behind 21 | bjshoe</title>
+  <meta name="description" content="Blackjack odds and house edge explained. Probability of busting on every total, dealer bust rates by up-card, expected value of each action, and how rule variations move the house edge.">
+  <meta name="keywords" content="blackjack odds, blackjack house edge, blackjack probability, dealer bust probability, blackjack math, blackjack expected value, blackjack bust odds">
+  <link rel="canonical" href="https://bjshoe.app/blackjack-odds/">
+  <meta name="theme-color" content="#0f172a">
+  <meta property="og:title" content="Blackjack Odds &amp; House Edge — The Math Behind 21">
+  <meta property="og:description" content="Probability of busting, dealer bust rates, expected value of each action, and how rules move the house edge.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://bjshoe.app/blackjack-odds/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Blackjack Odds & House Edge — The Math Behind 21",
+    "description": "Probability tables, dealer bust rates, and how blackjack rule variations move the house edge.",
+    "author": { "@type": "Organization", "name": "bjshoe" },
+    "publisher": { "@type": "Organization", "name": "bjshoe" },
+    "datePublished": "2026-05-27",
+    "mainEntityOfPage": "https://bjshoe.app/blackjack-odds/"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "bjshoe", "item": "https://bjshoe.app/" },
+      { "@type": "ListItem", "position": 2, "name": "Blackjack Odds", "item": "https://bjshoe.app/blackjack-odds/" }
+    ]
+  }
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1675923800122600" crossorigin="anonymous"></script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; background: #0f172a; color: #cbd5e1; margin: 0; padding: 40px 20px; line-height: 1.6; }
+    .container { max-width: 760px; margin: 0 auto; }
+    h1 { color: #f8fafc; font-size: 32px; margin-bottom: 8px; line-height: 1.2; }
+    h2 { color: #fcd34d; font-size: 22px; margin-top: 36px; margin-bottom: 12px; }
+    h3 { color: #f8fafc; font-size: 18px; margin-top: 24px; margin-bottom: 8px; }
+    p, li { font-size: 16px; }
+    a { color: #60a5fa; }
+    .updated { color: #94a3b8; font-size: 14px; margin-bottom: 24px; }
+    .back { display: inline-block; margin-bottom: 24px; color: #94a3b8; text-decoration: none; }
+    .back:hover { color: #f8fafc; }
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 15px; }
+    th, td { border: 1px solid #334155; padding: 8px 12px; text-align: left; }
+    th { background: #1e293b; color: #f8fafc; }
+    .callout { background: #1e293b; border-left: 4px solid #fcd34d; padding: 16px 20px; border-radius: 6px; margin: 20px 0; }
+    .play-cta { display: inline-block; background: #10b981; color: #f8fafc; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="/" class="back">← Back to game</a>
+    <h1>Blackjack Odds &amp; House Edge</h1>
+    <p class="updated">The math behind every blackjack hand · Updated May 2026</p>
+
+    <p>Blackjack is one of the most analyzable casino games in existence. Every probability — your bust chance, the dealer's bust chance, the value of each rule variation — can be computed exactly. This page collects the numbers that matter.</p>
+
+    <div class="callout">
+      <strong>Headline figure:</strong> In a typical 6-deck game with the dealer hitting soft 17, played with perfect basic strategy, the house edge is <strong>about 0.55%</strong>. With S17 (dealer stands on soft 17) it drops to about <strong>0.40%</strong>. Without basic strategy — playing on hunch — the edge balloons to roughly <strong>2–3%</strong>.
+    </div>
+
+    <h2>Probability of busting if you hit</h2>
+    <p>This is just the count of remaining cards that would push you over 21, divided by the deck. Approximate values for a 6-deck shoe:</p>
+    <table>
+      <thead><tr><th>Your hard total</th><th>Bust probability if you hit</th></tr></thead>
+      <tbody>
+        <tr><td>11 or lower</td><td>0%</td></tr>
+        <tr><td>12</td><td>31%</td></tr>
+        <tr><td>13</td><td>39%</td></tr>
+        <tr><td>14</td><td>56%</td></tr>
+        <tr><td>15</td><td>58%</td></tr>
+        <tr><td>16</td><td>62%</td></tr>
+        <tr><td>17</td><td>69%</td></tr>
+        <tr><td>18</td><td>77%</td></tr>
+        <tr><td>19</td><td>85%</td></tr>
+        <tr><td>20</td><td>92%</td></tr>
+      </tbody>
+    </table>
+    <p>This is why basic strategy says stand on hard 17+: hitting busts more than two-thirds of the time, and a 17 already loses to most dealer hands anyway.</p>
+
+    <h2>Dealer bust probability by up-card</h2>
+    <p>The dealer's fixed rule (hit until 17+) means we can compute their bust rate from each starting up-card. This is the single most important table for shaping your strategy:</p>
+    <table>
+      <thead><tr><th>Dealer up-card</th><th>Dealer bust probability</th></tr></thead>
+      <tbody>
+        <tr><td>2</td><td>~35%</td></tr>
+        <tr><td>3</td><td>~37%</td></tr>
+        <tr><td>4</td><td>~40%</td></tr>
+        <tr><td>5</td><td>~42%</td></tr>
+        <tr><td>6</td><td>~42%</td></tr>
+        <tr><td>7</td><td>~26%</td></tr>
+        <tr><td>8</td><td>~24%</td></tr>
+        <tr><td>9</td><td>~23%</td></tr>
+        <tr><td>10 / J / Q / K</td><td>~21%</td></tr>
+        <tr><td>Ace</td><td>~12%</td></tr>
+      </tbody>
+    </table>
+    <p>The pattern: dealer's <strong>4-5-6</strong> up-cards are by far the weakest (~40% bust rate). When the dealer shows one of these, you should stand on stiff totals (12-16) and double down more aggressively. When the dealer shows <strong>7 or higher</strong>, they're likely to make a strong hand — you need to hit until you reach 17+.</p>
+
+    <h2>Probability of getting a natural blackjack</h2>
+    <p>From a freshly shuffled 6-deck shoe, the probability of being dealt a natural (Ace + 10-value) on your first two cards is approximately <strong>4.75%</strong> — or about 1 in 21 hands. Since natural blackjacks pay 3:2, this single statistic accounts for a large share of your overall edge.</p>
+
+    <h2>How rule variations move the house edge</h2>
+    <p>Each rule has a known effect on the house's advantage. Positive numbers favor the house; negative numbers favor the player.</p>
+    <table>
+      <thead><tr><th>Rule</th><th>Effect on house edge</th></tr></thead>
+      <tbody>
+        <tr><td>Single deck (vs 6 deck)</td><td>−0.59%</td></tr>
+        <tr><td>2 decks (vs 6)</td><td>−0.20%</td></tr>
+        <tr><td>8 decks (vs 6)</td><td>+0.02%</td></tr>
+        <tr><td>Dealer hits soft 17 (H17)</td><td>+0.22%</td></tr>
+        <tr><td>Blackjack pays 6:5 instead of 3:2</td><td>+1.39%</td></tr>
+        <tr><td>Double after split (DAS) allowed</td><td>−0.14%</td></tr>
+        <tr><td>Resplit Aces (RSA) allowed</td><td>−0.08%</td></tr>
+        <tr><td>Late surrender allowed</td><td>−0.07%</td></tr>
+        <tr><td>Early surrender allowed</td><td>−0.62%</td></tr>
+        <tr><td>Double restricted to 9–11 only</td><td>+0.09%</td></tr>
+        <tr><td>No double after split</td><td>+0.14%</td></tr>
+        <tr><td>European No-Hole-Card rule</td><td>+0.11%</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>The 6:5 trap:</strong> Casinos increasingly offer "single deck" tables that pay only 6:5 on naturals. The single-deck rule saves you 0.59%; the 6:5 payout costs you 1.39%. Net: <strong>+0.80% in the casino's favor</strong>. These tables exist specifically to fool players who think "single deck = good." Always check the felt for "Blackjack pays 3 to 2."
+    </div>
+
+    <h2>Expected value of common decisions</h2>
+    <p>EV is what you'd average if you made the same decision over an infinite number of identical scenarios. A few classic examples:</p>
+    <ul>
+      <li><strong>Hit on hard 16 vs dealer 10:</strong> EV ≈ −0.54. Stand EV ≈ −0.54. Nearly identical — that's why this is the most-debated decision in basic strategy. The chart says hit, but barely.</li>
+      <li><strong>Double on 11 vs dealer 6:</strong> EV ≈ +0.66 per unit (vs +0.42 if you just hit). Huge difference — always double here.</li>
+      <li><strong>Split 8-8 vs dealer 10:</strong> EV ≈ −0.48 per unit. Standing is −0.54. Splitting is the lesser loss, not a win — but better than the alternative.</li>
+      <li><strong>Take insurance (no counting):</strong> EV ≈ −0.077 per unit of insurance. A small but consistent loss. Don't take it.</li>
+    </ul>
+
+    <h2>Why blackjack has the lowest house edge in the casino</h2>
+    <p>Most casino games have a fixed house edge baked into the bet (roulette ~2.7%, single-zero; baccarat ~1.06% banker; craps pass line ~1.41%). Blackjack is different: the dealer also has to play out their hand against the same shoe you do, and crucially, <em>you go first</em>. That means if you bust before the dealer plays, you lose immediately even if the dealer would have busted too. That asymmetry is most of the house's edge. Player advantages — 3:2 blackjack payouts, doubling, splitting, surrender — claw most of it back.</p>
+
+    <h2>Reality check</h2>
+    <p>A 0.55% house edge means that over the long run, for every $100 you wager (cumulatively), you expect to lose about 55 cents. That's the long-run average. Short-term variance is huge: you can win or lose dozens of bets in a row by pure luck. Bankroll management, not edge alone, determines whether you walk away ahead in any given session.</p>
+
+    <p><a href="/" class="play-cta">▶ Play bjshoe — practice with the right rules, free</a></p>
+
+    <h2>See also</h2>
+    <ul>
+      <li><a href="/blackjack-strategy/">Basic Strategy Chart</a></li>
+      <li><a href="/blackjack-rules/">Blackjack Rules</a></li>
+      <li><a href="/card-counting/">Card Counting Guide</a></li>
+      <li><a href="/blackjack-glossary/">Blackjack Glossary</a></li>
+    </ul>
+  </div>
+</body>
+</html>
