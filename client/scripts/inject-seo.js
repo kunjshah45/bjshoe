@@ -101,7 +101,6 @@ const SEO_HEAD = `
   <link rel="canonical" href="${SITE_URL}/">
   <meta name="theme-color" content="#0f172a">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-  <meta name="google-site-verification" content="m4ubqX9dRfg9x4JBb5r2Wh0Bq34OTMDWfvTjtfq133o">
   <meta property="og:title" content="${TITLE}">
   <meta property="og:description" content="${DESCRIPTION}">
   <meta property="og:type" content="website">
