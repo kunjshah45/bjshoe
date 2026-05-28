@@ -14,10 +14,20 @@ const GA_TAG = `<script async src="https://www.googletagmanager.com/gtag/js?id=$
 // before AdSense / GA4 fire. Auto-integrates with Google Consent Mode v2.
 const COOKIEYES_TAG = `<script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/ea18c8fc5ef2661e0030ff1b/script.js"></script>`;
 
+// Preconnect to third-party origins we know we'll hit, so the browser
+// opens TLS sessions in parallel with HTML parsing — shaves ~150-300ms
+// off LCP (a Core Web Vital that Google ranks on).
+const PRECONNECTS = `<link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+<link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
+<link rel="preconnect" href="https://cdn-cookieyes.com" crossorigin>
+<link rel="dns-prefetch" href="https://googleads.g.doubleclick.net">`;
+
 // PWA, favicon, and Apple-touch-icon links — installable on phone home
 // screens (return visits = more ad impressions), plus proper multi-size
 // favicons so the browser tab shows a crisp 🃏 instead of a blurry blob.
-const PWA_TAGS = `<link rel="manifest" href="/manifest.json">
+const PWA_TAGS = `${PRECONNECTS}
+<link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
