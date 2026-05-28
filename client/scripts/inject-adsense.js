@@ -1,6 +1,8 @@
-// Post-build: inject the Google AdSense loader script into the exported
-// index.html / 404.html. Auto Ads (enabled in the AdSense dashboard) then
-// places ads automatically; we don't need any <ins> placements in the app.
+// Post-build: inject the Google AdSense loader script into every exported
+// HTML page, plus one in-article ad placement on the static content pages.
+// Auto Ads (enabled in the AdSense dashboard) handles additional placements
+// automatically — these manual <ins> blocks just guarantee one high-value
+// placement on long-form pages where Auto Ads is conservative.
 
 const fs = require('fs');
 const path = require('path');
@@ -9,19 +11,56 @@ const PUBLISHER_ID = 'ca-pub-1675923800122600';
 const PUB_NUMERIC = PUBLISHER_ID.replace(/^ca-/, '');
 const ADS_TXT_TOKEN = 'f08c47fec0942fa0';
 
+// TODO: create a "Display ad — In-article" unit in AdSense and replace
+// CONTENT_PAGE_SLOT with the real slot ID. Until then this placement
+// reserves visual space but won't fill with a real ad.
+const CONTENT_PAGE_SLOT = 'CONTENT_INARTICLE_PLACEHOLDER';
+
 const SCRIPT = `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${PUBLISHER_ID}" crossorigin="anonymous"></script>`;
 const META = `<meta name="google-adsense-account" content="${PUBLISHER_ID}">`;
 
+// In-article ad block. Fluid layout adapts to the page width; in-article
+// layout flows naturally between paragraphs.
+const INARTICLE_AD = `
+<div style="margin: 24px 0; text-align: center;">
+  <ins class="adsbygoogle"
+       style="display:block; text-align:center;"
+       data-ad-layout="in-article"
+       data-ad-format="fluid"
+       data-ad-client="${PUBLISHER_ID}"
+       data-ad-slot="${CONTENT_PAGE_SLOT}"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>`;
+
 const distDir = path.join(__dirname, '..', 'dist');
 
-// Inject loader script + ownership meta tag into HTML files.
-for (const file of ['index.html', '404.html']) {
-  const filePath = path.join(distDir, file);
-  if (!fs.existsSync(filePath)) continue;
+function walkHtmlFiles(dir) {
+  const out = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) out.push(...walkHtmlFiles(full));
+    else if (entry.isFile() && entry.name.endsWith('.html')) out.push(full);
+  }
+  return out;
+}
 
+// Static content pages where we want one manual in-article ad. Each is a
+// folder name under client/public/ that gets copied to dist/<name>/index.html.
+const CONTENT_PAGES = new Set([
+  'card-counting/index.html',
+  'blackjack-strategy/index.html',
+  'blackjack-rules/index.html',
+  'blackjack-odds/index.html',
+  'blackjack-glossary/index.html',
+]);
+
+for (const filePath of walkHtmlFiles(distDir)) {
   let html = fs.readFileSync(filePath, 'utf8');
+  if (!html.includes('</head>')) continue; // GSC verification etc.
   let changed = false;
+  const rel = path.relative(distDir, filePath).replace(/\\/g, '/');
 
+  // Loader script + ownership meta on every page.
   if (!html.includes(`client=${PUBLISHER_ID}`)) {
     html = html.replace('</head>', `${SCRIPT}</head>`);
     changed = true;
@@ -31,11 +70,19 @@ for (const file of ['index.html', '404.html']) {
     changed = true;
   }
 
+  // In-article ad after the FIRST <h2> on content pages.
+  if (CONTENT_PAGES.has(rel) && !html.includes('data-ad-layout="in-article"')) {
+    // Match the first </h2> and insert the ad block right after it.
+    const replaced = html.replace(/<\/h2>/, `</h2>${INARTICLE_AD}`);
+    if (replaced !== html) {
+      html = replaced;
+      changed = true;
+    }
+  }
+
   if (changed) {
     fs.writeFileSync(filePath, html);
-    console.log(`Injected AdSense tags into ${file}`);
-  } else {
-    console.log(`${file} already has AdSense tags`);
+    console.log(`Injected AdSense into ${rel}`);
   }
 }
 

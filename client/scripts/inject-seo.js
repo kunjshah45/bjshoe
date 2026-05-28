@@ -13,6 +13,51 @@ const GA_TAG = `<script async src="https://www.googletagmanager.com/gtag/js?id=$
 // CookieYes CMP — loads FIRST in <head> so consent state is established
 // before AdSense / GA4 fire. Auto-integrates with Google Consent Mode v2.
 const COOKIEYES_TAG = `<script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/ea18c8fc5ef2661e0030ff1b/script.js"></script>`;
+
+// PWA, favicon, and Apple-touch-icon links — installable on phone home
+// screens (return visits = more ad impressions), plus proper multi-size
+// favicons so the browser tab shows a crisp 🃏 instead of a blurry blob.
+const PWA_TAGS = `<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="bjshoe">`;
+
+// HowTo schema for the strategy and counting guides. Eligible for richer
+// Google snippets (step-by-step list directly in results).
+const HOWTO_STRATEGY = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'How to Play Basic Strategy in Blackjack',
+  description: 'Apply the mathematically optimal play for every blackjack hand vs every dealer up-card.',
+  totalTime: 'PT10M',
+  step: [
+    { '@type': 'HowToStep', name: 'Look at your hand total', text: 'Determine whether your hand is hard, soft, or a pair. Hard = no Ace or Ace forced to 1. Soft = Ace counted as 11. Pair = two same-rank cards.' },
+    { '@type': 'HowToStep', name: 'Look at the dealer up-card', text: 'The dealer shows one card face up. 2 through 6 are weak (high bust rate). 7 through Ace are strong.' },
+    { '@type': 'HowToStep', name: 'Find your hand in the correct chart', text: 'Use the Hard Totals, Soft Totals, or Pairs chart on this page based on your hand type.' },
+    { '@type': 'HowToStep', name: 'Read the action at the intersection', text: 'The cell where your hand row meets the dealer up-card column tells you to Hit, Stand, Double, Split, or Surrender.' },
+    { '@type': 'HowToStep', name: 'Internalize the absolute rules', text: 'Always split Aces and 8s. Never split 10s or 5s. Always stand on hard 17+. Always hit hard 11 or less. Never take insurance.' },
+  ],
+});
+
+const HOWTO_COUNTING = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'How to Count Cards in Blackjack using the Hi-Lo System',
+  description: 'Track shoe composition to gain a player edge using the standard Hi-Lo count.',
+  totalTime: 'PT10H',
+  step: [
+    { '@type': 'HowToStep', name: 'Assign Hi-Lo values', text: 'Memorize: cards 2 through 6 are +1, cards 7 through 9 are 0, and 10-value cards and Aces are -1.' },
+    { '@type': 'HowToStep', name: 'Keep a running count', text: 'Starting from a fresh shoe, add or subtract the Hi-Lo value of every card you see — yours, the dealer\'s, and every other player\'s.' },
+    { '@type': 'HowToStep', name: 'Convert to true count', text: 'Divide the running count by the estimated number of decks remaining in the shoe. The true count is what actually drives betting decisions.' },
+    { '@type': 'HowToStep', name: 'Bet according to the true count', text: 'Bet 1 unit at true count of +1 or lower. Increase to 2-4-8-12 units as the true count rises. The rule of thumb: each +1 in true count shifts the edge ~0.5% toward the player.' },
+    { '@type': 'HowToStep', name: 'Apply strategy deviations', text: 'At high true counts a handful of basic-strategy plays change. The most important: take insurance at true count +3 or higher, and stand on 16 vs dealer 10 at true count 0 or higher.' },
+  ],
+});
 const TITLE = 'Blackjack — Play Free Online Blackjack | bjshoe';
 const DESCRIPTION = 'Play free online blackjack against the dealer. No signup, no download, classic Vegas rules — splits, doubles, late surrender, insurance, and 3:2 blackjack payouts. Free chips, instant play.';
 const KEYWORDS = 'blackjack, free blackjack, online blackjack, blackjack online, blackjack free, play blackjack, blackjack game, vegas blackjack, 21, blackjack rules, blackjack strategy, free blackjack no download';
@@ -257,15 +302,32 @@ for (const filePath of walkHtmlFiles(distDir)) {
     changed = true;
   }
 
+  // PWA / apple-touch-icon links.
+  if (!html.includes('rel="manifest"')) {
+    html = html.replace('</head>', `${PWA_TAGS}</head>`);
+    changed = true;
+  }
+
   // GA4 last in <head>.
   if (!html.includes(GA_ID)) {
     html = html.replace('</head>', `${GA_TAG}</head>`);
     changed = true;
   }
 
+  // Page-specific HowTo schema.
+  const rel = path.relative(distDir, filePath).replace(/\\/g, '/');
+  if (rel === 'blackjack-strategy/index.html' && !html.includes('"HowTo"')) {
+    html = html.replace('</head>', `<script type="application/ld+json">${HOWTO_STRATEGY}</script></head>`);
+    changed = true;
+  }
+  if (rel === 'card-counting/index.html' && !html.includes('"HowTo"')) {
+    html = html.replace('</head>', `<script type="application/ld+json">${HOWTO_COUNTING}</script></head>`);
+    changed = true;
+  }
+
   if (changed) {
     fs.writeFileSync(filePath, html);
-    console.log(`Injected tags into ${path.relative(distDir, filePath)}`);
+    console.log(`Injected tags into ${rel}`);
   }
 }
 
