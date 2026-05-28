@@ -9,6 +9,10 @@ const SITE_URL = 'https://bjshoe.app';
 const GA_ID = 'G-K5ZBX1MDTT';
 const GA_TAG = `<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_ID}');</script>`;
+
+// CookieYes CMP — loads FIRST in <head> so consent state is established
+// before AdSense / GA4 fire. Auto-integrates with Google Consent Mode v2.
+const COOKIEYES_TAG = `<script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/ea18c8fc5ef2661e0030ff1b/script.js"></script>`;
 const TITLE = 'Blackjack — Play Free Online Blackjack | bjshoe';
 const DESCRIPTION = 'Play free online blackjack against the dealer. No signup, no download, classic Vegas rules — splits, doubles, late surrender, insurance, and 3:2 blackjack payouts. Free chips, instant play.';
 const KEYWORDS = 'blackjack, free blackjack, online blackjack, blackjack online, blackjack free, play blackjack, blackjack game, vegas blackjack, 21, blackjack rules, blackjack strategy, free blackjack no download';
@@ -243,11 +247,26 @@ function walkHtmlFiles(dir) {
 
 for (const filePath of walkHtmlFiles(distDir)) {
   let html = fs.readFileSync(filePath, 'utf8');
-  if (html.includes(GA_ID)) continue; // idempotent
-  if (!html.includes('</head>')) continue; // GSC verification file etc. has no head
-  html = html.replace('</head>', `${GA_TAG}</head>`);
-  fs.writeFileSync(filePath, html);
-  console.log(`Injected GA4 into ${path.relative(distDir, filePath)}`);
+  if (!html.includes('</head>')) continue; // GSC verification file etc. has no <head>
+
+  let changed = false;
+
+  // CookieYes first — top of <head> so consent loads before any tracker.
+  if (!html.includes('id="cookieyes"')) {
+    html = html.replace(/<head([^>]*)>/, `<head$1>${COOKIEYES_TAG}`);
+    changed = true;
+  }
+
+  // GA4 last in <head>.
+  if (!html.includes(GA_ID)) {
+    html = html.replace('</head>', `${GA_TAG}</head>`);
+    changed = true;
+  }
+
+  if (changed) {
+    fs.writeFileSync(filePath, html);
+    console.log(`Injected tags into ${path.relative(distDir, filePath)}`);
+  }
 }
 
 // robots.txt — allow all crawlers, point to sitemap
