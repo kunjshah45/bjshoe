@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Platform, View } from 'react-native';
 
 // Renders a Google AdSense display ad placement. Web-only — returns null on
@@ -7,8 +7,8 @@ import { Platform, View } from 'react-native';
 // render arbitrary HTML tags in its tree), then we ping `adsbygoogle.push({})`
 // to request fill.
 //
-// Note: ads will only render once AdSense moves the site from "Getting ready"
-// to "Ready" and the slot ID below corresponds to a real ad unit.
+// Auto-collapses (returns null) when AdSense reports the slot as unfilled —
+// that way placeholder/unapproved slots don't reserve blank space on the page.
 
 const ADSENSE_CLIENT = 'ca-pub-1675923800122600';
 
@@ -20,8 +20,11 @@ interface AdSlotProps {
   responsive?: boolean;
 }
 
+type FillState = 'pending' | 'filled' | 'unfilled';
+
 export function AdSlot({ slot, width = 300, height = 250, format, responsive }: AdSlotProps) {
   const containerRef = useRef<any>(null);
+  const [fillState, setFillState] = useState<FillState>('pending');
 
   useEffect(() => {
     if (Platform.OS !== 'web' || typeof document === 'undefined') return;
@@ -46,14 +49,35 @@ export function AdSlot({ slot, width = 300, height = 250, format, responsive }: 
       const w = window as any;
       (w.adsbygoogle = w.adsbygoogle || []).push({});
     } catch (e) {
-      // Ad blocker or AdSense not ready — fail silently, leaves an empty slot.
       console.warn('[AdSlot] adsbygoogle push failed', e);
     }
+
+    // AdSense sets data-ad-status on the <ins> element to either "filled" or
+    // "unfilled" after its push() resolves. Observe it so we can collapse on
+    // unfilled (no approved account / placeholder slot ID / no ad available).
+    const observer = new MutationObserver(() => {
+      const status = ins.getAttribute('data-ad-status');
+      if (status === 'filled') setFillState('filled');
+      else if (status === 'unfilled') setFillState('unfilled');
+    });
+    observer.observe(ins, { attributes: true, attributeFilter: ['data-ad-status'] });
+
+    // Final fallback: if no status appears within 5 seconds, treat as unfilled
+    // (covers the AdSense-still-pending-approval case where push() succeeds
+    // but no fill event ever fires).
+    const timeout = setTimeout(() => {
+      if (!ins.getAttribute('data-ad-status')) setFillState('unfilled');
+    }, 5000);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeout);
+    };
   }, [slot, width, height, format, responsive]);
 
   if (Platform.OS !== 'web') return null;
+  if (fillState === 'unfilled') return null;
 
-  // Use createElement so TS doesn't complain about <div> inside RN trees.
   return (
     <View style={{ width, height, alignSelf: 'center', marginVertical: 12 }}>
       {React.createElement('div', {

@@ -28,7 +28,6 @@ export function InterstitialAdOverlay({ visible, onClose }: Props) {
         contentContainerStyle={styles.scroll}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.tag}>Advertisement</Text>
         <View style={styles.adRow}>
           <AdSlot slot={SLOT_A} width={300} height={250} />
           <AdSlot slot={SLOT_B} width={300} height={250} />
@@ -57,13 +56,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-  },
-  tag: {
-    color: '#94a3b8',
-    fontSize: 11,
-    letterSpacing: 1,
-    textTransform: 'uppercase',
-    marginBottom: 16,
   },
   adRow: {
     flexDirection: 'row',

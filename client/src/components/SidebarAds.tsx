@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Platform, useWindowDimensions, Text } from 'react-native';
+import { View, StyleSheet, Platform, useWindowDimensions } from 'react-native';
 import { AdSlot } from './AdSlot';
 
 // Three sidebar ad slots, top/middle/bottom. Replace placeholders with
@@ -21,7 +21,6 @@ export function SidebarAds() {
 
   return (
     <View style={styles.sidebar} pointerEvents="box-none">
-      <Text style={styles.tag}>Advertisement</Text>
       <AdSlot slot={SLOT_TOP} width={300} height={250} />
       <AdSlot slot={SLOT_MID} width={300} height={250} />
       <AdSlot slot={SLOT_BOT} width={300} height={250} />
@@ -38,12 +37,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
     zIndex: 5, // below modals (1000) and the top bar (30), above the table
-  },
-  tag: {
-    color: '#94a3b8',
-    fontSize: 10,
-    letterSpacing: 1,
-    textTransform: 'uppercase',
-    marginBottom: 4,
   },
 });
