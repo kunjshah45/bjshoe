@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { InterstitialAdOverlay } from './InterstitialAdOverlay';
+import { InterstitialAdOverlay, HAS_INTERSTITIAL_SLOTS } from './InterstitialAdOverlay';
 
 interface Props {
   visible: boolean;
@@ -23,7 +23,17 @@ export function OutOfChipsModal({ visible, onClaim }: Props) {
     if (!visible) setShowAd(false);
   }, [visible]);
 
-  const handleGetChips = () => setShowAd(true);
+  const handleGetChips = () => {
+    // Skip the interstitial overlay entirely if no real ad slots are
+    // wired up yet — would just show an empty black screen with a Close
+    // Ad button. Once real AdSense slot IDs are in InterstitialAdOverlay,
+    // HAS_INTERSTITIAL_SLOTS flips to true and the overlay appears.
+    if (!HAS_INTERSTITIAL_SLOTS) {
+      onClaim();
+      return;
+    }
+    setShowAd(true);
+  };
   const handleCloseAd = () => {
     setShowAd(false);
     onClaim();

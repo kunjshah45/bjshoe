@@ -12,6 +12,13 @@ import { Platform, View } from 'react-native';
 
 const ADSENSE_CLIENT = 'ca-pub-1675923800122600';
 
+// Real AdSense ad-unit IDs are pure digits. Anything else (placeholders like
+// 'INTERSTITIAL_SLOT_A_PLACEHOLDER') gets rejected with 400 by AdSense — skip
+// the push entirely to avoid console noise and a quality-signal hit.
+export function isRealAdSlot(slot: string): boolean {
+  return /^\d+$/.test(slot);
+}
+
 interface AdSlotProps {
   slot: string;            // AdSense ad-unit slot ID (digits only)
   width?: number;
@@ -28,6 +35,11 @@ export function AdSlot({ slot, width = 300, height = 250, format, responsive }: 
 
   useEffect(() => {
     if (Platform.OS !== 'web' || typeof document === 'undefined') return;
+    // Bail before touching the DOM if the slot ID isn't real.
+    if (!isRealAdSlot(slot)) {
+      setFillState('unfilled');
+      return;
+    }
     const container = containerRef.current;
     if (!container) return;
 
