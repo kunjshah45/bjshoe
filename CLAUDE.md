@@ -204,14 +204,20 @@ Verified against current code:
 | Mid-round disconnect cleanup | Done | `gameManager.ts` `leaveRoom` |
 | App.tsx modularization (screens + hooks) | Done | `screens/`, `hooks/useActiveRoom.ts`, `hooks/useGameActions.ts` |
 | Mode-aware action dispatch | Done | `useGameActions()` |
-| Audio (SFX + music + volume) | NOT done | settings toggles exist; no `audioManager` |
-| Ads (banner, interstitial, rewarded reload) | NOT done | no ad SDK or modal |
+| Audio (SFX + music + volume) | Done | `client/src/services/audio.ts` + `useBgMusic` hook. WAV→MP3 SFX in `client/public/audio/`. BG music starts on user gesture, gated by settings. |
+| AdSense (Auto Ads + manual placements) | Mostly done | Loader + ads.txt + meta + CookieYes CMP all live. Two slot-ID placeholders still need swap once AdSense flips "Ready". |
+| Web deploy | Done | GH Pages on custom domain `bjshoe.app`. `.github/workflows/deploy.yml` builds via `npm run build:web:ghpages` on every push to main. |
+| Analytics + Consent | Done | GA4 `G-K5ZBX1MDTT` + CookieYes CMP `ea18c8fc5ef2661e0030ff1b` injected site-wide via `inject-seo.js`. CookieYes loads BEFORE GA4/AdSense so Consent Mode v2 works. |
+| SEO content pages | Done | 8 indexable URLs: `/`, `/blackjack-rules/`, `/blackjack-strategy/`, `/blackjack-odds/`, `/blackjack-glossary/`, `/card-counting/`, `/privacy/`, `/terms/`. All schema-tagged, sourced bylines, linked from ModeSelectScreen footer. |
+| PWA installable | Done | `manifest.json` + 16/32/48/180/192/512 icons in `client/public/`. Apple meta tags + maskable icon. |
+| Lazy-loaded multi + how-to | Done | `MultiRoot.tsx` extracted; `App.tsx` uses `React.lazy()` + Suspense for it and `HowToPlayScreen`. Initial bundle ~616 KB; MultiRoot and HowToPlay chunks 12 KB each. |
 | Redis persistence | NOT done | `gameManager.ts:13` Map only |
 | REST endpoints (`POST /rooms`, etc.) | NOT done | only `GET /health` |
 | Tests | NOT done | no test files; server `npm test` exits with error |
 | Dockerfile / `.env.example` / README | NOT done | none in repo |
 | Host-controlled table buy-in / chip grants | NOT done | discussed and deferred |
 | Real-money IAP | NOT done | on roadmap; no SDK |
+| Server deployed for multiplayer | NOT done | `FEATURES.multiplayer = false` in current build, "Play with Friends" button hidden |
 | Animation speed setting wired through | Done | `TableScreen.tsx` reads `settings.animationSpeed`, passes into `CardView` and overlay delay |
 
 TASK_BREAKDOWN.md still marks Phase 1.1 (surrender + insurance), Settings, and animations as TODO. They are done.
@@ -227,23 +233,61 @@ TASK_BREAKDOWN.md still marks Phase 1.1 (surrender + insurance), Settings, and a
 - Currency formatting is inline (`$${n}`), no formatter util.
 - Path alias: `@blackjack/shared` resolves to `shared/index.ts` via workspaces.
 
-## For the next session
+## Production state (as of 2026-05-28)
 
-`App.tsx` modularization is done. `TableScreen.tsx` is now the large file (~440 LOC) and is the next natural relocation target if it grows further:
+- **Live URL:** https://bjshoe.app/ (custom domain, GitHub Pages)
+- **Repo:** https://github.com/kunjshah45/bjshoe
+- **Deploy:** push to `main` → GH Actions → `client/dist/` → live in ~2 min
+- **Build chain:** `expo export -p web` → copy `index.html` → `404.html` → write `CNAME` → `node scripts/inject-adsense.js` → `node scripts/inject-seo.js`
+- **inject-adsense.js** walks every HTML in `dist/`, adds the AdSense loader, ownership meta, in-article ad block after first `<h2>` on content pages. Writes `ads.txt`.
+- **inject-seo.js** walks every HTML, injects CookieYes (top of `<head>`), preconnect hints, PWA + favicon links, GA4 (bottom of `<head>`), SEO head block on `index.html`/`404.html`, beefed-up `<noscript>`, `HowTo` schema on strategy + counting pages. Writes `robots.txt` and `sitemap.xml`.
 
-- `client/src/constants.ts` — `MIN_BET`, `CHIP_DENOMS`, `AUTO_DEAL_SECONDS` (currently duplicated in TableScreen)
-- `client/src/utils/result.ts` — `calcResultAmount`, `dealOrderForPlayer`, `dealOrderForDealer`
-- `client/src/hooks/useResultOverlay.ts`, `useCardSweep.ts`, `useAutoDealCountdown.ts`, `useBetting.ts` — pull the longer effects out of TableScreen
-- `client/src/styles/table.ts` — extract the bottom StyleSheet block
+## Key IDs and config
 
-Open product/infra items, in rough priority:
+- AdSense publisher: `ca-pub-1675923800122600` (`ads.txt` token `f08c47fec0942fa0`)
+- GA4 measurement ID: `G-K5ZBX1MDTT`
+- CookieYes CMP ID: `ea18c8fc5ef2661e0030ff1b`
+- GSC verification file: `/google96f12519a468db78.html`
+- Bing verified via GSC import
+- `FEATURES.multiplayer = false` in `client/src/config.ts` for current deploy
 
-- Server unit tests against `shared/gameEngine.ts` (test runner not yet wired up — server `npm test` exits with error)
-- Socket URL: still hardcoded in `client/src/services/socket.ts` — wire to `EXPO_PUBLIC_SOCKET_URL`
-- Audio (settings toggles exist, no `audioManager`)
-- Redis-backed rooms (replace in-memory Map in `gameManager.ts:13`)
-- Out-of-chips paths discussed but deferred: real-money IAP, host-grant chips, poker-style table buy-in
+## Outstanding manual user actions
 
-Spec for the solo/multi/chip-reload work: `docs/superpowers/specs/2026-05-25-solo-multi-and-chip-reload-design.md`.
+1. AdSense status is "Getting ready" — normal for new sites, 24-72h after `ads.txt` is published. Don't worry unless still stuck after 2 weeks.
+2. Replace `CHIPS_MODAL_AD_SLOT` placeholder in `client/src/components/OutOfChipsModal.tsx` with a real AdSense slot ID once a Display 300×250 ad unit is created.
+3. Replace `CONTENT_INARTICLE_PLACEHOLDER` in `client/scripts/inject-adsense.js` with a real in-article slot ID once that ad unit is created.
+4. Flaticon attribution: decide between (a) small footer link "Icons by Freepik from Flaticon", (b) skip (small enforcement risk), or (c) upgrade to Flaticon Premium ($10/mo).
+
+## Roadmap
+
+**TIER 1 — off-page (user effort, biggest ranking lever):**
+- Reddit post on r/blackjack (draft already discussed in chat — comment helpfully first, then post)
+- Show HN
+- ProductHunt launch (Tues/Wed best)
+- web.archive.org/save submission (DR 90+ free backlink, 30 seconds)
+- Wikipedia external links on Card Counting / Blackjack pages
+
+**TIER 2 — long-tail content pages (~5 min each):**
+- `/when-to-double-down/`
+- `/when-to-split-in-blackjack/`
+- `/european-blackjack/`
+- `/single-deck-blackjack/`
+- `/blackjack-side-bets/`
+- `/blackjack-bankroll/`
+- `/dealer-rules-blackjack/`
+- `/blackjack-variants/` (hub linking to variant pages)
+- Pattern: copy any existing `client/public/<slug>/index.html`, swap content, add `Article` + `BreadcrumbList` schema, update `sitemap.xml` urls list in `inject-seo.js`. In-article ad auto-injects.
+
+**TIER 3 — perf:**
+- `services/socket.ts` is statically imported by `TableScreen` and `useGameActions`, so `socket.io-client` is still in the main 616 KB chunk. Refactoring to dynamic-import would shed ~80 KB. Non-trivial.
+- TableScreen still ~580 LOC — could extract `useResultOverlay`, `useCardSweep`, `useAutoDealCountdown`, `useBetting` hooks. Cosmetic.
+
+**TIER 4 — multiplayer revival:**
+- Server unit tests against `shared/gameEngine.ts` (no test runner wired up — server `npm test` exits with error)
+- Deploy server to Render / Fly.io / Railway (free tiers with WebSocket support)
+- Wire `EXPO_PUBLIC_SOCKET_URL` env var into `client/src/services/socket.ts`
+- Flip `FEATURES.multiplayer = true` in `client/src/config.ts`
+- Spec: `docs/superpowers/specs/2026-05-25-solo-multi-and-chip-reload-design.md`
+- Discussed-but-deferred multi features: host-controlled chip buy-in (player requests, host approves), real-money IAP, host-grant chips.
 
 When touching client code, **read `https://docs.expo.dev/versions/v54.0.0/`** before importing Expo modules (per `client/AGENTS.md`).
