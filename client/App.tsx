@@ -6,6 +6,7 @@ import { ModeSelectScreen } from './src/screens/ModeSelectScreen';
 import { TableScreen } from './src/screens/TableScreen';
 import { useBgMusic } from './src/hooks/useBgMusic';
 import { FEATURES } from './src/config';
+import { SidebarAds } from './src/components/SidebarAds';
 
 // Lazy-loaded: HowToPlayScreen and MultiRoot pull their own dependency
 // trees (multi pulls socket.io, lobby, useMultiSocket). Keeping them
@@ -35,19 +36,28 @@ export default function App() {
     }
   }, [gameMode, setGameMode]);
 
-  if (showHowToPlay) {
+  const screen = (() => {
+    if (showHowToPlay) {
+      return (
+        <Suspense fallback={<Loading />}>
+          <HowToPlayScreen onBack={() => setShowHowToPlay(false)} />
+        </Suspense>
+      );
+    }
+    if (gameMode === null) return <ModeSelectScreen onHowToPlay={() => setShowHowToPlay(true)} />;
+    if (gameMode === 'solo') return <TableScreen />;
+    if (!FEATURES.multiplayer) return <ModeSelectScreen onHowToPlay={() => setShowHowToPlay(true)} />;
     return (
       <Suspense fallback={<Loading />}>
-        <HowToPlayScreen onBack={() => setShowHowToPlay(false)} />
+        <MultiRoot />
       </Suspense>
     );
-  }
-  if (gameMode === null) return <ModeSelectScreen onHowToPlay={() => setShowHowToPlay(true)} />;
-  if (gameMode === 'solo') return <TableScreen />;
-  if (!FEATURES.multiplayer) return <ModeSelectScreen onHowToPlay={() => setShowHowToPlay(true)} />;
+  })();
+
   return (
-    <Suspense fallback={<Loading />}>
-      <MultiRoot />
-    </Suspense>
+    <>
+      {screen}
+      <SidebarAds />
+    </>
   );
 }
