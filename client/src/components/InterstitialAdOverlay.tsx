@@ -2,14 +2,13 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { AdSlot, isRealAdSlot } from './AdSlot';
 
-// Three slot IDs for the interstitial. Replace each with a real AdSense
-// ad-unit ID once you create three "Display ad" units in AdSense → Ads →
-// By ad unit. Using three distinct units gives you per-slot reporting.
-// Until they're real, the overlay short-circuits to onClose immediately
-// (see hasRealSlots below) instead of showing an empty black overlay.
-const SLOT_A = 'INTERSTITIAL_SLOT_A_PLACEHOLDER';
-const SLOT_B = 'INTERSTITIAL_SLOT_B_PLACEHOLDER';
-const SLOT_C = 'INTERSTITIAL_SLOT_C_PLACEHOLDER';
+// Three slot IDs for the interstitial — the three Display ad units
+// (ad1/ad2/ad3). Shared with SidebarAds; that's fine since the interstitial
+// only appears on the SPA where the sidebar is also rendered and AdSense
+// permits reusing the same ad unit multiple times on a page.
+const SLOT_A = '7717467825';
+const SLOT_B = '9467183671';
+const SLOT_C = '6453477290';
 
 // True once at least one slot is wired to a real ad unit. Used by callers
 // (OutOfChipsModal) to skip the overlay step entirely when there are no

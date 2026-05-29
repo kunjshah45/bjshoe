@@ -11,24 +11,26 @@ const PUBLISHER_ID = 'ca-pub-1675923800122600';
 const PUB_NUMERIC = PUBLISHER_ID.replace(/^ca-/, '');
 const ADS_TXT_TOKEN = 'f08c47fec0942fa0';
 
-// TODO: create a "Display ad — In-article" unit in AdSense and replace
-// CONTENT_PAGE_SLOT with the real slot ID. Until then this placement
-// reserves visual space but won't fill with a real ad.
-const CONTENT_PAGE_SLOT = 'CONTENT_INARTICLE_PLACEHOLDER';
+// Content-page in-content placement. Reuses the ad3 (horizontal) Display
+// unit — rendered as a responsive display ad, which fits well between
+// paragraphs on long-form pages.
+const CONTENT_PAGE_SLOT = '6453477290';
 
 const SCRIPT = `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${PUBLISHER_ID}" crossorigin="anonymous"></script>`;
 const META = `<meta name="google-adsense-account" content="${PUBLISHER_ID}">`;
 
-// In-article ad block. Fluid layout adapts to the page width; in-article
-// layout flows naturally between paragraphs.
+// In-content ad block. Responsive display ad — adapts to the page width and
+// flows naturally between paragraphs. The marker comment is used below for
+// idempotency (don't double-inject on re-runs).
+const INARTICLE_MARKER = 'bjshoe-incontent-ad';
 const INARTICLE_AD = `
-<div style="margin: 24px 0; text-align: center;">
+<div style="margin: 24px 0; text-align: center;"><!-- ${INARTICLE_MARKER} -->
   <ins class="adsbygoogle"
        style="display:block; text-align:center;"
-       data-ad-layout="in-article"
-       data-ad-format="fluid"
        data-ad-client="${PUBLISHER_ID}"
-       data-ad-slot="${CONTENT_PAGE_SLOT}"></ins>
+       data-ad-slot="${CONTENT_PAGE_SLOT}"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>`;
 
@@ -70,8 +72,8 @@ for (const filePath of walkHtmlFiles(distDir)) {
     changed = true;
   }
 
-  // In-article ad after the FIRST <h2> on content pages.
-  if (CONTENT_PAGES.has(rel) && !html.includes('data-ad-layout="in-article"')) {
+  // In-content ad after the FIRST <h2> on content pages.
+  if (CONTENT_PAGES.has(rel) && !html.includes(INARTICLE_MARKER)) {
     // Match the first </h2> and insert the ad block right after it.
     const replaced = html.replace(/<\/h2>/, `</h2>${INARTICLE_AD}`);
     if (replaced !== html) {

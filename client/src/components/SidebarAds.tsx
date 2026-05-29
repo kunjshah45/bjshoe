@@ -2,11 +2,12 @@ import React from 'react';
 import { View, StyleSheet, Platform, useWindowDimensions } from 'react-native';
 import { AdSlot } from './AdSlot';
 
-// Three sidebar ad slots, top/middle/bottom. Replace placeholders with
-// real AdSense Display ad-unit IDs (one per slot for granular reporting).
-const SLOT_TOP = 'SIDEBAR_SLOT_TOP_PLACEHOLDER';
-const SLOT_MID = 'SIDEBAR_SLOT_MID_PLACEHOLDER';
-const SLOT_BOT = 'SIDEBAR_SLOT_BOT_PLACEHOLDER';
+// Three sidebar ad slots, top/middle/bottom. These reuse the three Display
+// ad units (ad1/ad2/ad3) — same units are shared with the interstitial since
+// the two never render on the same page at once.
+const SLOT_TOP = '7717467825';
+const SLOT_MID = '9467183671';
+const SLOT_BOT = '6453477290';
 
 // Web-only, desktop-only persistent right-sidebar with 3 standard AdSense
 // 300x250 display ads. Same layout pattern 247blackjack / casual.com use.
